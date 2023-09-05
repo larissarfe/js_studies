@@ -1,9 +1,33 @@
 'use strict';
 
-function calcAge(birthYear) {
-  const age = 2037 - birthYear;
-  return age;
+//console.log(me);
+//console.log(job);
+//console.log(year);
+
+//var me = 'Jonas';
+//let job = 'teacher';
+//const year = 1991;
+
+//==============================>>> HOISTING WITH FUNCTIONS:
+
+console.log(addDecl(2, 3));
+console.log(addExpr);
+console.log(addArrow);
+
+function addDecl(a, b) {
+  return a + b;
 }
+
+const addExpr = function (a, b) {
+  return a + b;
+};
+
+const addArrow = (a, b) => a + b;
+
+//function calcAge(birthYear) {
+//const age = 2037 - birthYear;
+//return age;
+//}
 
 //console.log(calcAge(1991));
 

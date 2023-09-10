@@ -1,0 +1,143 @@
+
+
+==========================> REGULAR FUNCTIONS VS. ARROW FUNTIONS 
+
+=====+++++++++++++++++++++++>>>>>:::: SOME PITFALLS OF THE THIS KEYWORD RELATED TO REGULAR FUNCTIONS AND ARROW FUNCTIONS 
+
+WHEN WE SHOULD USE OR AVOID EACH OF THEM 
+
+const jonas = {
+    firstName: 'Jonas',
+    year: 1991,
+    calcAge = function () { 
+        console.log(this); this = JONAS 
+    },
+
+    greet: () => console.log(`Hey ${this.firstName}`),
+};
+ 
+
+ jonas.greet() -> IN THIS CASE THE RESULT IN THE CONSOLE WILL BE HEY UNDEFINED 
+
+ ARROW FUNCTIONS DO NOT HAVE THEIR OWN KEYWORD - IT WILL SIMPLY USE THE THIS KEYWORD FROM THIS SURRONDINGS, IN OTHER WORDS, ITS PARENTS THIS KEYWORD 
+
+    AND THE PARENTS SCOPE FOR THIS GREET METHOD IS THE GLOBAL SCOPE 
+
+    THE {} IN JONAS IS NOT ACTUALLY A CODE BLOCK - IT'S JUST AN OBJECT LITERAL - IT'S JUST A WAY THAT WE LITERALLY DEFINE OBJECTS; 
+    SO EVEN THE METHODS ARE IN THE GLOBAL SCOPE 
+
+
+=====> WHEN WE TRY TO ACCESS A PROPERTY THAT DOESN'T EXIST ON A CERTAIN OBJECT, WE DO NOT GET AN ERROR BUT SIMPLY UNDEFINED!!!!!!!!!
+
+VARIABLES DECLARED WITH VAR CREATES PROPERTIES ON THE GLOBAL OBJECT 
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>> THE BEST PRACTICE IS WE SHOULD NEVER EVER USE AN ARROW FUNCTION AS A METHOD 
+
+
+____________________________________________________________________
+
+
+-- ANOTHER PITFALL OF THE THIS KEYWORD IS WHEN WE HAVE A FUNCTION INSIDE OF A METHOD: 
+
+const jonas = {
+    firstName: 'Jonas',
+    year: 1991,
+    calcAge = function () { 
+       console.log(this);
+       console.log(2037- this.year);
+
+       CONST SELF = THIS // HERE WE ARE OUTSIDE OF THE FUNCTION isMillenial SO WE CAN ACCESS THE THIS KEYWORD 
+
+       const isMillenial = function() {
+        console.log(this)
+        console.log(this.year >= 1981 && this.year <= 1996);
+
+       };
+       isMillenial();
+    },
+
+    greet: () => console.log(`Hey ${this.firstName}`),
+};
+ jonas.greet()
+
+
+
+-----> THE isMillenial FUNCTION IS INSIDE OF THE METHOD AND IT WILL BE CALLED WHEN WHE CALL THE PROPERTY calcAge ->
+    will trigger an error this.year -> UNDEFINED 
+    why is that? 
+
+    THE RULE SAYS THAT INSIDE OF A REGULAR FUNCTION CALL:
+        
+       };
+       isMillenial(); 
+    },
+         
+         INSIDE OF A REGULAR FUNCTION CALL THE THIS KEYWORD MUST BE UNDEFINED 
+
+         >>>>> SO IT WILL WORK AS IF THE FUNCTION IS BEING CALLED OUTSIDE OF THE METHOD
+
+    
+    >>>>>>>>>>>>>>>> THERE ARE 2 SOLUTIONS TO THIS PROBLEM: (THE PROBLEM OF RETURNING THE FUNCTION isMillenial WHEN THE METHOD calcAge IS CALLED?)
+
+    1====> THE FIRST SOLUTION IS TO USE AN EXTRA VARIABLE THAT DEVELOPERS USUALLY CALL SELF - OUTSIDE OF THE FUNCTION WE DEFINE THE VARIABLE 
+
+ calcAge = function () { 
+       console.log(this);
+       console.log(2037- this.year);
+
+       CONST SELF = THIS // HERE WE ARE OUTSIDE OF THE FUNCTION isMillenial SO WE CAN ACCESS THE THIS KEYWORD 
+
+       const isMillenial = function() {
+        console.log(self)
+        console.log(self.year >= 1981 && self.year <= 1996);
+
+       };
+       isMillenial();
+    },
+
+
+    SO INSIDE OF THE FUNCTION WE CAN REPLACE THIS WITH SELF 
+
+        THEN THROUGH THE SCOPE CHAIN THE SELF WILL BE EQUAL TO THIS - THE HIS KEYWORD (THE OBJECT JONAS)
+
+    ##### IT WILL WORK RETURN THE VALUE OF TRUE 
+
+    2=============> THE SECOND SOLUTION IS TO USE AN ARROW FUNCTION: 
+
+        THAT IS GOING TO WORK BECAUSE THE ARROW FUNCTION DOES NOT HAVE ITS OWN THIS KEYWORD
+
+        SO IT WILL SIMPLY USE THE THIS KEYWORD OF ITS PARENT SCOPE -> IN THIS CASE THAT WILL BE THE calcAge METHOD 
+
+        const isMillenial = () => {
+        console.log(THIS)
+        console.log(THIS.year >= 1981 && THIS.year <= 1996);
+
+       };
+       isMillenial();
+    },
+
+
+    THE SECOND SOLUTION IS THE BEST SOLUTION!!!!!!!!
+_________________________________________________________________________________________________________________
+
+ obs:::::::::::::: ARGUMENTS KEYWORDS::
+
+    FUNCTIONS ALSO GET ACCESS TO AN ARGUMENTS KEYWORD 
+    NOT JUST THE THIS KEYWORD, BUT ALSO AN ARGUMENTS KEYWORD 
+
+    > JUST LIKE THE THIS KEYWORD, THE ARGUMENTS KEYWORDS IS ONLY AVAILABLE IN REGULAR FUNCTIONS 
+
+    const addExpr = function (a, b) {
+        console.log(ARGUMENTS); // 2, 5 -- THE KEYWORD LISTS ALL THE ARGUMENTS PASSED ON THE FUNCTION 
+        return a + b;
+    }; 
+
+    addExpr (2, 5)
+
+THIS CAN BE USEFUL WHEN WE NEED A FUNCTION TO ACCEPT MORE PARAMETERS THAN WE ACTUALLY SPECIFIED 
+
+    THE ARROW FUNCTION DOS NOT GET THE ARGUMENT KEYWORD!!!!!!
+
+obs: when we have more than one line of code we need to explicitly return 
+
